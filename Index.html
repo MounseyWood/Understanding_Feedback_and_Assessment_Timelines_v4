@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BA (Hons) Fashion Program Timeline - 3D Visualization</title>
+  <!-- Tailwind CSS for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #f8f9fa;
+      padding: 0;
+      margin: 0;
+      color: #333;
+    }
+    
+    .ku-content-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .ku-content {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    #scene-container {
+      width: 100%;
+      height: 600px;
+      position: relative;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      border-bottom: 3px solid #dee2e6;
+      padding-bottom: 20px;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #e9ecef;
+    }
+    
+    .year-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .year-tab {
+      padding: 8px 20px;
+      background-color: #e9ecef;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    
+    .year-tab:hover {
+      background-color: #dee2e6;
+    }
+    
+    .year-tab.active {
+      background-color: #6c757d;
+      color: white;
+    }
+    
+    .timeline-container {
+      position: relative;
+      overflow-x: auto;
+    }
+    
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+      margin: 0 30px;
+    }
+    
+    .timeline-axis {
+      height: 2px;
+      background-color: #adb5bd;
+      position: relative;
+      margin: 30px 0;
+    }
+    
+    .timeline-item {
+      position: absolute;
+      background-color: #6c8ebf;
+      border-radius: 4px;
+      padding: 10px;
+      color: white;
+      font-size: 0.9rem;
+      min-width: 100px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 2;
+      top: -15px;
+      transform: translateY(-100%);
+    }
+    
+    .timeline-item.milestone {
+      background-color: #f8cecc;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      min-width: auto;
+      padding: 0;
+      top: -10px;
+      cursor: pointer;
+    }
+    
+    .timeline-item.development {
+      background-color: #d5e8d4;
+      color: #333;
+    }
+    
+    .timeline-item.research {
+      background-color: #ffe6cc;
+      color: #333;
+    }
+    
+    .timeline-item.essay {
+      background-color: #e1d5e7;
+      color: #333;
+    }
+    
+    .timeline-month {
+      position: absolute;
+      bottom: -25px;
+      transform: translateX(-50%);
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+    
+    .level-header {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 40px 0 20px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .tooltip {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      padding: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      max-width: 300px;
+      display: none;
+    }
+    
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+      justify-content: center;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+    }
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="ku-content-wrapper">
+    <div class="ku-content">
+      <div class="header">
+        <img src="/api/placeholder/300/60" alt="Kingston School of Art Logo" class="h-6 mb-4 mx-auto block">
+        <h1 class="text-2xl font-bold mb-4">BA (Hons) Fashion Program Feedback and Assessment Timeline</h1>
+        <p>
+          This visual timeline shows your feedback and assessment journey over the duration of the BA (Hons) Fashion Program.
+        </p>
+        <p>
+          It demonstrates how assessment weighting contributes to your final degree classification.
+        </p>
+        <p style="margin-top: 20px">
+          Year 1: Non-weighted, allowing for experimentation and exploration without high stakes.
+        </p>
+        <p>
+          Year 2: Contributes 20% to your final mark, reflecting the adoption of Professional Practice.
+        </p>
+        <p>
+          Year 3: Carries the majority of the weight at 80%, emphasising the importance of your final year work.
+        </p>
+        <blockquote style="margin: 20px 0;">
+          <em>"Commitment to practice is the key to progress, and through failure, we often uncover the most valuable lessons that teach us resilience, and gain insights that lead to deeper understanding, growth and mastery. Use this time well."</em>
+          <p>
+            Staff member or Fashion Designer quote
+          </p>
+        </blockquote>
+        <p>
+          Click on any item to see detailed information. Use the year tabs to navigate between different academic years.
+        </p>
+      </div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #6c8ebf;"></div>
+          <span>Projects</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #d5e8d4;"></div>
+          <span>Development</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #ffe6cc;"></div>
+          <span>Research</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #e1d5e7;"></div>
+          <span>Essays</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: #f8cecc;"></div>
+          <span>Milestones</span>
+        </div>
+      </div>
+
+      <div class="year-tabs">
+        <div class="year-tab active" data-year="level4">Level 4 (Year 1)</div>
+        <div class="year-tab" data-year="level5">Level 5 (Year 2)</div>
+        <div class="year-tab" data-year="level6">Level 6 (Year 3)</div>
+      </div>
+
+      <div id="timeline-view">
+        <!-- Will be populated with JavaScript -->
+      </div>
+      
+      <div id="tooltip" class="tooltip"></div>
+    </div>
+
+    <div class="footer">
+      <p>Kingston School of Art - BA (Hons) Fashion Program – Learning Outcomes, Feedback and Assessment KnowledgeBase</p>
+      <p>© 2025 Kingston University</p>
+    </div>
+  </div>
+
+  <script>
+    // Timeline data extracted from the Mermaid Gantt chart
+    const timelineData = {
+      level4: [
+        { type: 'project', title: 'Induction', start: '2024-09-09', end: '2024-09-16', color: '#6c8ebf' },
+        { type: 'project', title: 'Project 1 (FN4004 - Design Process 1)', start: '2024-09-23', end: '2024-10-21', color: '#6c8ebf' },
+        { type: 'milestone', title: 'Formative Feedback (FN4004)', date: '2024-10-14', color: '#f8cecc', link: 'https://canvas.kingston.ac.uk/courses/32501/pages/placeholder' },
+        { type: 'milestone', title: 'Summative Assessment Submission (FN4004)', date: '2024-10-21', color: '#f8cecc', link: 'https://canvas.kingston.ac.uk/courses/32501/pages/placeholder' },
+        { type: 'project', title: 'Project 2 (FN4004)', start: '2024-10-24', end: '2024-12-13', color: '#6c8ebf' },
+        { type: 'project', title: 'TB1 Enrichment Week', start: '2024-10-28', end: '2024-11-01', color: '#d5e8d4' },
+        { type: 'milestone', title: 'Formative Feedback (FN4004)', date: '2024-12-02', color: '#f8cecc' },
+        { type: 'development', title: 'Toile Development (FN4005)', start: '2025-01-06', end: '2025-02-14', color: '#d5e8d4' },
+        { type: 'project', title: 'Project 3 (FN4004)', start: '2025-01-13', end: '2025-03-17', color: '#6c8ebf' },
+        { type: 'milestone', title: 'Formative Feedback (FN4005)', date: '2025-02-10', color: '#f8cecc' },
+        { type: 'project', title: 'TB2 Enrichment Week', start: '2025-02-17', end: '2025-02-21', color: '#d5e8d4' },
+        { type: 'development', title: 'Portfolio Development (FN4005)', start: '2025-02-24', end: '2025-03-17', color: '#d5e8d4' },
+        { type: 'milestone', title: 'Summative Submission (FN4005)', date: '2025-03-17', color: '#f8cecc' },
+        { type: 'research', title: 'Historical Themes Research (HA4104)', start: '2024-09-23', end: '2024-11-22', color: '#ffe6cc' },
+        { type: 'research', title: 'Essay Planning (HA4104)', start: '2024-11-25', end: '2024-12-06', color: '#e1d5e7' },
+        { type: 'essay', title: 'Essay Writing Period (HA4104)', start: '2025-01-06', end: '2025-02-28', color: '#e1d5e7' },
+        { type: 'milestone', title: 'CHS Submission (HA4104)', date: '2025-03-03', color: '#f8cecc' }
+      ],
+      level5: [
+        { type: 'project', title: 'Induction', start: '2025-09-09', end: '2025-09-20', color: '#6c8ebf' },
+        { type: 'project', title: 'Project Kick-Off (FN5001 - Design Process 2)', start: '2025-09-23', end: '2025-10-21', color: '#6c8ebf' },
+        { type: 'milestone', title: 'Formative Feedback (FN5001)', date: '2025-10-14', color: '#f8cecc' },
+        { type: 'milestone', title: 'Project Submission (FN5001)', date: '2025-10-21', color: '#f8cecc' },
+        { type: 'development', title: 'Design Process Tutorials (FN5001)', start: '2025-10-22', end: '2025-12-13', color: '#d5e8d4' },
+        { type: 'project', title: 'Major Project Phase 1 (FN5001)', start: '2025-10-24', end: '2025-12-13', color: '#6c8ebf' },
+        { type: 'project', title: 'TB1 Enrichment Week (FN5001)', start: '2025-10-28', end: '2025-11-01', color: '#d5e8d4' },
+        { type: 'milestone', title: 'Formative Review (FN5001)', date: '2025-12-02', color: '#f8cecc' },
+        { type: 'development', title: 'Product Development (FN5003)', start: '2026-01-06', end: '2026-02-14', color: '#d5e8d4' },
+        { type: 'project', title: 'Icons & Muses (FN5001)', start: '2026-01-13', end: '2026-03-17', color: '#6c8ebf' },
+        { type: 'milestone', title: 'Mid-Point Formative (FN5003)', date: '2026-02-10', color: '#f8cecc' },
+        { type: 'project', title: 'TB2 Enrichment Week (FN5003)', start: '2026-02-17', end: '2026-02-21', color: '#d5e8d4' },
+        { type: 'development', title: 'Portfolio Development (FN5003)', start: '2026-02-24', end: '2026-03-17', color: '#d5e8d4' },
+        { type: 'milestone', title: 'Final Project Submission (FN5003)', date: '2026-03-17', color: '#f8cecc' },
+        { type: 'research', title: 'Historical Themes Research (HA5107)', start: '2025-09-23', end: '2025-11-22', color: '#ffe6cc' },
+        { type: 'research', title: 'Essay Planning (HA5107)', start: '2025-11-25', end: '2025-12-06', color: '#e1d5e7' },
+        { type: 'essay', title: 'Essay Writing Period (HA5107)', start: '2026-01-06', end: '2026-02-28', color: '#e1d5e7' },
+        { type: 'milestone', title: 'CHS Submission (HA5107)', date: '2026-03-03', color: '#f8cecc' }
+      ],
+      level6: [
+        { type: 'project', title: 'Induction', start: '2026-09-09', end: '2026-09-20', color: '#6c8ebf' },
+        { type: 'project', title: 'Project Kick-Off (FN6001 - Design Process 3)', start: '2026-09-23', end: '2026-10-21', color: '#6c8ebf' },
+        { type: 'milestone', title: 'Formative Feedback (FN6001)', date: '2026-10-14', color: '#f8cecc' },
+        { type: 'milestone', title: 'Project Submission (FN6001)', date: '2026-10-21', color: '#f8cecc' },
+        { type: 'development', title: 'Design Process Tutorials (FN6001)', start: '2026-10-22', end: '2026-12-13', color: '#d5e8d4' },
+        { type: 'project', title: 'Major Project Phase 1 (FN6001)', start: '2026-10-24', end: '2026-12-13', color: '#6c8ebf' },
+        { type: 'project', title: 'TB1 Enrichment Week (FN6001)', start: '2026-10-28', end: '2026-11-01', color: '#d5e8d4' },
+        { type: 'milestone', title: 'Formative Review (FN6001)', date: '2026-12-02', color: '#f8cecc' },
+        { type: 'development', title: 'Product Development (FN6004)', start: '2027-01-06', end: '2027-02-14', color: '#d5e8d4' },
+        { type: 'project', title: 'Icons & Muses (FN6004)', start: '2027-01-13', end: '2027-03-17', color: '#6c8ebf' },
+        { type: 'milestone', title: 'Mid-Point Formative (FN6004)', date: '2027-02-10', color: '#f8cecc' },
+        { type: 'project', title: 'TB2 Enrichment Week (FN6004)', start: '2027-02-17', end: '2027-02-21', color: '#d5e8d4' },
+        { type: 'development', title: 'Portfolio Development (FN6004)', start: '2027-02-24', end: '2027-03-17', color: '#d5e8d4' },
+        { type: 'milestone', title: 'Final Project Submission (FN6004)', date: '2027-03-17', color: '#f8cecc' },
+        { type: 'research', title: 'Historical Themes Research (HA6101)', start: '2026-09-23', end: '2026-11-22', color: '#ffe6cc' },
+        { type: 'research', title: 'Essay Planning (HA6101)', start: '2026-11-25', end: '2026-12-06', color: '#e1d5e7' },
+        { type: 'essay', title: 'Essay Writing Period (HA6101)', start: '2027-01-06', end: '2027-02-28', color: '#e1d5e7' },
+        { type: 'milestone', title: 'CHS Submission (HA6101)', date: '2027-03-03', color: '#f8cecc' }
+      ]
+    };
+
+    // Helper function to parse dates
+    function parseDate(dateStr) {
+      const [year, month, day] = dateStr.split('-').map(Number);
+      return new Date(year, month - 1, day);
+    }
+
+    // Function to format dates
+    function formatDate(dateStr) {
+      const date = parseDate(dateStr);
+      return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // Get date range for a specific level
+    function getDateRange(level) {
+      const allDates = [];
+      
+      timelineData[level].forEach(item => {
+        if (item.start) allDates.push(parseDate(item.start));
+        if (item.end) allDates.push(parseDate(item.end));
+        if (item.date) allDates.push(parseDate(item.date));
+      });
+      
+      return {
+        min: new Date(Math.min.apply(null, allDates)),
+        max: new Date(Math.max.apply(null, allDates))
+      };
+    }
+
+    // Generate month markers
+    function generateMonths(minDate, maxDate, containerWidth) {
+      const months = [];
+      let currentDate = new Date(minDate);
+      currentDate.setDate(1); // Start at beginning of month
+      
+      while (currentDate <= maxDate) {
+        const nextMonth = new Date(currentDate);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        
+        const position = ((currentDate - minDate) / (maxDate - minDate)) * containerWidth;
+        
+        months.push({
+          date: new Date(currentDate),
+          position: position
+        });
+        
+        currentDate = nextMonth;
+      }
+      
+      return months;
+    }
+
+    // Create timeline view
+    function createTimeline(level) {
+      const container = document.getElementById('timeline-view');
+      container.innerHTML = '';
+      
+      // Create level header
+      const header = document.createElement('div');
+      header.className = 'level-header';
+      header.textContent = `Level ${level.slice(-1)} - ${level === 'level4' ? 'Non-weighted' : level === 'level5' ? 'Weighted 20%' : 'Weighted 80%'}`;
+      container.appendChild(header);
+      
+      // Create timeline container
+      const timelineContainer = document.createElement('div');
+      timelineContainer.className = 'timeline-container';
+      container.appendChild(timelineContainer);
+      
+      // Create timeline
+      const timeline = document.createElement('div');
+      timeline.className = 'timeline';
+      timelineContainer.appendChild(timeline);
+      
+      // Get date range
+      const dateRange = getDateRange(level);
+      const minDate = dateRange.min;
+      const maxDate = dateRange.max;
+      
+      // Create timeline axis
+      const axis = document.createElement('div');
+      axis.className = 'timeline-axis';
+      timeline.appendChild(axis);
+      
+      // Create month markers
+      const months = generateMonths(minDate, maxDate, timelineContainer.clientWidth - 60);
+      months.forEach(month => {
+        const monthMarker = document.createElement('div');
+        monthMarker.className = 'timeline-month';
+        monthMarker.textContent = month.date.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+        monthMarker.style.left = `${month.position}px`;
+        axis.appendChild(monthMarker);
+      });
+      
+      // Add timeline items
+      timelineData[level].forEach(item => {
+        if (item.type === 'milestone') {
+          // Create milestone marker
+          const milestone = document.createElement('div');
+          milestone.className = 'timeline-item milestone';
+          milestone.style.backgroundColor = item.color;
+          
+          const date = parseDate(item.date);
+          const position = ((date - minDate) / (maxDate - minDate)) * (timelineContainer.clientWidth - 60);
+          milestone.style.left = `${position}px`;
+          
+          milestone.setAttribute('data-title', item.title);
+          milestone.setAttribute('data-date', formatDate(item.date));
+          milestone.setAttribute('data-description', `Milestone: ${item.title}`);
+          if (item.link) milestone.setAttribute('data-link', item.link);
+          
+          milestone.addEventListener('mouseover', showTooltip);
+          milestone.addEventListener('mouseout', hideTooltip);
+          
+          axis.appendChild(milestone);
+        } else {
+          // Create timeline item
+          const timelineItem = document.createElement('div');
+          timelineItem.className = `timeline-item ${item.type}`;
+          timelineItem.textContent = item.title;
+          timelineItem.style.backgroundColor = item.color;
+          
+          const startDate = parseDate(item.start);
+          const endDate = parseDate(item.end);
+          const startPosition = ((startDate - minDate) / (maxDate - minDate)) * (timelineContainer.clientWidth - 60);
+          const endPosition = ((endDate - minDate) / (maxDate - minDate)) * (timelineContainer.clientWidth - 60);
+          const width = endPosition - startPosition;
+          
+          timelineItem.style.left = `${startPosition}px`;
+          timelineItem.style.width = `${width}px`;
+          
+          // Position based on type (staggered vertically)
+          let verticalOffset = 0;
+          if (item.type === 'project') verticalOffset = 0;
+          else if (item.type === 'development') verticalOffset = -60;
+          else if (item.type === 'research' || item.type === 'essay') verticalOffset = -120;
+          
+          timelineItem.style.top = `${verticalOffset}px`;
+          
+          timelineItem.setAttribute('data-title', item.title);
+          timelineItem.setAttribute('data-start', formatDate(item.start));
+          timelineItem.setAttribute('data-end', formatDate(item.end));
+          timelineItem.setAttribute('data-description', `${item.type.charAt(0).toUpperCase() + item.type.slice(1)}: ${item.title}`);
+          
+          timelineItem.addEventListener('mouseover', showTooltip);
+          timelineItem.addEventListener('mouseout', hideTooltip);
+          
+          timeline.appendChild(timelineItem);
+        }
+      });
+    }
+
+    // Show tooltip
+    function showTooltip(event) {
+      const tooltip = document.getElementById('tooltip');
+      const item = event.target;
+      
+      let tooltipContent = `<h3 class="font-bold">${item.getAttribute('data-title')}</h3>`;
+      
+      if (item.getAttribute('data-date')) {
+        tooltipContent += `<p>Date: ${item.getAttribute('data-date')}</p>`;
+      } else {
+        tooltipContent += `<p>Period: ${item.getAttribute('data-start')} to ${item.getAttribute('data-end')}</p>`;
+      }
+      
+      tooltipContent += `<p>${item.getAttribute('data-description')}</p>`;
+      
+      if (item.getAttribute('data-link')) {
+        tooltipContent += `<a href="${item.getAttribute('data-link')}" target="_blank" class="text-blue-600 hover:underline">More Information</a>`;
+      }
+      
+      tooltip.innerHTML = tooltipContent;
+      
+      // Position tooltip
+      const rect = item.getBoundingClientRect();
+      const tooltipRect = tooltip.getBoundingClientRect();
+      
+      let left = rect.left + window.scrollX;
+      let top = rect.top + window.scrollY - tooltipRect.height - 10;
+      
+      // Adjust position if would go off screen
+      if (left + tooltipRect.width > window.innerWidth) {
+        left = window.innerWidth - tooltipRect.width - 10;
+      }
+      
+      if (top < window.scrollY) {
+        top = rect.bottom + window.scrollY + 10;
+      }
+      
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+      tooltip.style.display = 'block';
+    }
+
+    // Hide tooltip
+    function hideTooltip() {
+      document.getElementById('tooltip').style.display = 'none';
+    }
+
+    // Initialize tabs
+    function initTabs() {
+      const tabs = document.querySelectorAll('.year-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          createTimeline(tab.getAttribute('data-year'));
+        });
+      });
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', () => {
+      initTabs();
+      createTimeline('level4');
+      
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        const activeTab = document.querySelector('.year-tab.active');
+        if (activeTab) {
+          createTimeline(activeTab.getAttribute('data-year'));
+        }
+      });
+    });
+  </script>
+</body>
+</html>
